@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LeetCode Solutions - Page 1</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            min-height: 100vh;
+            padding: 20px;
+            background: #1E1E1E;
+            color: #FFFFFF;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            position: relative;
+            overflow: hidden; /* Prevent scrollbars from video */
+        }
+
+        /* Video Background */
+        video {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1; /* Behind all content */
+            opacity: 0.5; /* Slight transparency for readability */
+        }
+
+        .container {
+            max-width: 1000px;
+            background: rgba(30, 30, 30, 0.9);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            z-index: 1; /* Above video */
+            position: relative;
+        }
+
+        h1 {
+            color: #FFA116;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .nav-btn {
+            background: #666666;
+            border: none;
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .nav-btn:hover:not(:disabled) {
+            background: #888888;
+            transform: scale(1.2);
+        }
+
+        .triangle-left,
+        .triangle-right {
+            width: 0;
+            height: 0;
+            border: 10px solid transparent;
+        }
+
+        .triangle-left {
+            border-right-color: #FFA116;
+        }
+
+        .triangle-right {
+            border-left-color: #FFA116;
+        }
+
+        .nav-btn:hover:not(:disabled) .triangle-left {
+            border-right-color: #FF8C00;
+        }
+
+        .nav-btn:hover:not(:disabled) .triangle-right {
+            border-left-color: #FF8C00;
+        }
+
+        .problem-list {
+            list-style: none;
+        }
+
+        .problem-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            margin-bottom: 10px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .problem-item:hover {
+            background: rgba(255, 161, 22, 0.2);
+            transform: translateX(5px);
+        }
+
+        .problem-title {
+            color: #FFFFFF;
+            text-decoration: none;
+            flex-grow: 1;
+            min-width: 0;
+            word-wrap: break-word;
+        }
+
+        .problem-details {
+            display: flex;
+            gap: 20px;
+            font-size: 0.9em;
+            color: #AAAAAA;
+            min-width: 80px;
+            justify-content: flex-end;
+            flex-shrink: 0;
+        }
+
+        .difficulty {
+            color: #FF4500;
+        }
+
+        .difficulty.easy {
+            color: #32CD32;
+        }
+
+        .difficulty.medium {
+            color: #FFA116;
+        }
+
+        /* Popup Styles */
+        .profile-trigger {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background: #666666;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            overflow: hidden;
+            z-index: 1001;
+        }
+
+        .profile-trigger:hover {
+            background: #888888;
+            transform: scale(1.1);
+        }
+
+        .profile-logo {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .profile-popup {
+            position: fixed;
+            bottom: 20px;
+            right: 70px;
+            background: rgba(30, 30, 30, 0.9);
+            border-radius: 8px;
+            padding: 10px 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, transform 0.3s ease, visibility 0s linear 0.3s;
+            z-index: 1000;
+            max-width: 180px;
+            text-align: center;
+            transform: translateX(100%);
+        }
+
+        .profile-popup.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(0);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        .profile-link {
+            color: #FFA116;
+            text-decoration: none;
+            font-size: 0.9em;
+            display: block;
+        }
+
+        .profile-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <video autoplay muted loop>
+        <source src="bg_video.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+
+    <div class="container">
+        <h1>LeetCode Solutions - Page 1</h1>
+        <ul class="problem-list">
+            <li class="problem-item">
+                <a href="solutions/two-sum.html" class="problem-title">1. Two Sum</a>
+                <div class="problem-details">
+                    <span class="difficulty easy">Easy</span>
+                </div>
+            </li>
+            <li class="problem-item">
+                <a href="solutions/add-two-numbers.html" class="problem-title">2. Add Two Numbers</a>
+                <div class="problem-details">
+                    <span class="difficulty medium">Medium</span>
+                </div>
+            </li>
+            <li class="problem-item">
+                <a href="solutions/longest-substring.html" class="problem-title">3. Longest Substring Without Repeating Characters</a>
+                <div class="problem-details">
+                    <span class="difficulty medium">Medium</span>
+                </div>
+            </li>
+            <li class="problem-item">
+                <a href="#" class="problem-title">4. Median of Two Sorted Arrays</a>
+                <div class="problem-details">
+                    <span class="difficulty hard">Hard</span>
+                </div>
+            </li>
+            <li class="problem-item">
+                <a href="#" class="problem-title">5. Longest Palindromic Substring</a>
+                <div class="problem-details">
+                    <span class="difficulty medium">Medium</span>
+                </div>
+            </li>
+            <li class="problem-item">
+                <a href="#" class="problem-title">6. Zigzag Conversion</a>
+                <div class="problem-details">
+                    <span class="difficulty medium">Medium</span>
+                </div>
+            </li>
+            <li class="problem-item">
+                <a href="#" class="problem-title">7. Reverse Integer</a>
+                <div class="problem-details">
+                    <span class="difficulty medium">Medium</span>
+                </div>
+            </li>
+            <li class="problem-item">
+                <a href="#" class="problem-title">8. String to Integer (atoi)</a>
+                <div class="problem-details">
+                    <span class="difficulty medium">Medium</span>
+                </div>
+            </li>
+            <li class="problem-item">
+                <a href="#" class="problem-title">9. Palindrome Number</a>
+                <div class="problem-details">
+                    <span class="difficulty easy">Easy</span>
+                </div>
+            </li>
+            <li class="problem-item">
+                <a href="#" class="problem-title">10. Regular Expression Matching</a>
+                <div class="problem-details">
+                    <span class="difficulty hard">Hard</span>
+                </div>
+            </li>
+        </ul>
+        <div class="nav-buttons">
+            <button class="nav-btn" disabled><div class="triangle-left"></div></button>
+            <button class="nav-btn" onclick="window.location.href='page2.html'"><div class="triangle-right"></div></button>
+        </div>
+    </div>
+
+    <!-- Profile Popup -->
+    <a href="https://leetcode.com/yourusername" target="_blank" class="profile-trigger">
+        <img src="leetcode_logo.png" alt="LeetCode Logo" class="profile-logo">
+    </a>
+    <a href="https://leetcode.com/yourusername" target="_blank" class="profile-popup">
+        <span class="profile-link">Visit My LeetCode Profile</span>
+    </a>
+
+    <script>
+        // Show/hide popup on hover
+        const trigger = document.querySelector('.profile-trigger');
+        const popup = document.querySelector('.profile-popup');
+
+        trigger.addEventListener('mouseover', () => popup.classList.add('active'));
+        trigger.addEventListener('mouseout', () => popup.classList.remove('active'));
+        popup.addEventListener('mouseover', () => popup.classList.add('active'));
+        popup.addEventListener('mouseout', () => popup.classList.remove('active'));
+    </script>
+</body>
+</html>
