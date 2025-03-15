@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>503. Next Greater Element in a Circular Array</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(to right bottom, #dfe4ea, #919191);
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .title {
+            text-align: center;
+            font-size: 2.5em;
+            color: #2c3e50;
+            margin-bottom: 40px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        .content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+            flex-direction: column;
+            /* height: auto; */
+        }
+        .code-section {
+            background-color: #1e1e1e;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+            flex-shrink: 0; /* Prevent shrinking */
+        min-width: 300px; /* Minimum width */
+        max-width: 700px; /* Maximum width before wrapping */
+        height: fit-content;
+      //  position: sticky;
+        top: 10px;
+        }
+        .code-section h2 {
+            color: #dcdcdc;
+            margin-top: 0;
+            font-size: 1.5em;
+            display: inline-block;
+        }
+        .copy-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: #282c34;
+            border: 1px solid #61afef;
+            width: 32px;
+            height: 32px;
+            border-radius: 5px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+        .copy-btn:hover {
+            background-color: #3a3f4a;
+            border-color: #4a8fd2;
+        }
+        .copy-btn svg {
+            width: 18px;
+            height: 18px;
+            fill: #61afef;
+        }
+        .copy-btn:hover svg {
+            fill: #4a8fd2;
+        }
+        pre {
+            margin: 0;
+    padding: 10px;
+    background-color: #282c34;
+    border-radius: 5px;
+    overflow-x: auto;
+    font-family: 'Courier New', Courier, monospace;
+    color: #ffffff;
+    text-align: left;
+    min-width: fit-content; /* Prevents shrinking */
+    margin-bottom: 10px;
+}
+        /* Manual Colors */
+        .keyword { color: #c678dd; } /* Purple */
+        .function { color: #61afef; } /* Blue */
+        .string { color: #98c379; } /* Green */
+        .number { color: #d19a66; } /* Orange */
+        .comment { color: #5c6370; font-style: italic; } /* Gray */
+        .operator { color: #e5c07b; } /* Yellowish */
+        .article-section {
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            /* flex: 1; Allow it to grow */
+            flex: 1; /* Allow it to shrink */
+        min-width: 300px; /* Minimum width before wrapping */
+        }
+        .article-section h2 {
+            color: #2c3e50;
+            font-size: 1.5em;
+            margin-top: 0;
+        }
+        .article-section img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin: 20px 0;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
+        .article-section p {
+            line-height: 1.6;
+            color: #555;
+        }
+        .article-section li{
+            line-height: 1.5;
+        }
+        .article-section code{
+            line-height: 1.5;
+            color: #1e1e1e;
+            font-size: 1.3em;
+        }
+        .article-section pre{
+            color: white;
+        }
+        @media (max-width: 768px) {
+            .content {
+                flex-direction: column; /* Stack vertically on smaller screens */
+            }
+            .code-section {
+                width: 100%; /* Full width on smaller screens */
+            }
+            .article-section {
+                width: 100%; /* Full width on smaller screens */
+                min-width: 0; /* Allow full shrinkage on small screens */
+            }
+            .title {
+                font-size: 2em;
+            }
+
+            .copy-btn {
+                top: 10px;
+                right: 10px;
+            }
+        }
+        #cde{
+            border-radius: 20%;
+        }
+        iframe {
+            border: none;
+            overflow: hidden;
+
+        }
+            .copied-dialog {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background: #282c34;
+        color: #61dafb;
+        padding: 12px 20px;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: 600;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out, transform 0.3s ease-in-out;
+        box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.3);
+        text-align: center;
+        z-index: 1000;
+        transform: translateX(100%);
+    }
+    .copied-dialog.show {
+        opacity: 1;
+        visibility: visible;
+        transform: translateX(0);
+    }
+    pre code{
+        color: white !important;
+        text-align: left !important;
+    }
+    .article-section table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+  padding: 5px;
+}
+.code-section pre { line-height: 120%; font-family: monospace; font-size: 13px;}
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+body .hll { background-color: #49483e }
+/* body { background: #282c34; color: #F8F8F2 } */
+body .c { color: #959077 } /* Comment */
+body .err { color: #ED007E; background-color: #1E0010 } /* Error */
+body .esc { color: #F8F8F2 } /* Escape */
+body .g { color: #F8F8F2 } /* Generic */
+body .k { color: #66D9EF } /* Keyword */
+body .l { color: #AE81FF } /* Literal */
+body .n { color: #F8F8F2 } /* Name */
+body .o { color: #FF4689 } /* Operator */
+body .x { color: #F8F8F2 } /* Other */
+body .p { color: #F8F8F2 } /* Punctuation */
+body .ch { color: #959077 } /* Comment.Hashbang */
+body .cm { color: #959077 } /* Comment.Multiline */
+body .cp { color: #959077 } /* Comment.Preproc */
+body .cpf { color: #959077 } /* Comment.PreprocFile */
+body .c1 { color: #959077 } /* Comment.Single */
+body .cs { color: #959077 } /* Comment.Special */
+body .gd { color: #FF4689 } /* Generic.Deleted */
+body .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
+body .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+body .gr { color: #F8F8F2 } /* Generic.Error */
+body .gh { color: #F8F8F2 } /* Generic.Heading */
+body .gi { color: #A6E22E } /* Generic.Inserted */
+body .go { color: #66D9EF } /* Generic.Output */
+body .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
+body .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
+body .gu { color: #959077 } /* Generic.Subheading */
+body .gt { color: #F8F8F2 } /* Generic.Traceback */
+body .kc { color: #66D9EF } /* Keyword.Constant */
+body .kd { color: #66D9EF } /* Keyword.Declaration */
+body .kn { color: #FF4689 } /* Keyword.Namespace */
+body .kp { color: #66D9EF } /* Keyword.Pseudo */
+body .kr { color: #66D9EF } /* Keyword.Reserved */
+body .kt { color: #66D9EF } /* Keyword.Type */
+body .ld { color: #E6DB74 } /* Literal.Date */
+body .m { color: #AE81FF } /* Literal.Number */
+body .s { color: #E6DB74 } /* Literal.String */
+body .na { color: #A6E22E } /* Name.Attribute */
+body .nb { color: #F8F8F2 } /* Name.Builtin */
+body .nc { color: #A6E22E } /* Name.Class */
+body .no { color: #66D9EF } /* Name.Constant */
+body .nd { color: #A6E22E } /* Name.Decorator */
+body .ni { color: #F8F8F2 } /* Name.Entity */
+body .ne { color: #A6E22E } /* Name.Exception */
+body .nf { color: #A6E22E } /* Name.Function */
+body .nl { color: #F8F8F2 } /* Name.Label */
+body .nn { color: #F8F8F2 } /* Name.Namespace */
+body .nx { color: #A6E22E } /* Name.Other */
+body .py { color: #F8F8F2 } /* Name.Property */
+body .nt { color: #FF4689 } /* Name.Tag */
+body .nv { color: #F8F8F2 } /* Name.Variable */
+body .ow { color: #FF4689 } /* Operator.Word */
+body .pm { color: #F8F8F2 } /* Punctuation.Marker */
+body .w { color: #F8F8F2 } /* Text.Whitespace */
+body .mb { color: #AE81FF } /* Literal.Number.Bin */
+body .mf { color: #AE81FF } /* Literal.Number.Float */
+body .mh { color: #AE81FF } /* Literal.Number.Hex */
+body .mi { color: #AE81FF } /* Literal.Number.Integer */
+body .mo { color: #AE81FF } /* Literal.Number.Oct */
+body .sa { color: #E6DB74 } /* Literal.String.Affix */
+body .sb { color: #E6DB74 } /* Literal.String.Backtick */
+body .sc { color: #E6DB74 } /* Literal.String.Char */
+body .dl { color: #E6DB74 } /* Literal.String.Delimiter */
+body .sd { color: #E6DB74 } /* Literal.String.Doc */
+body .s2 { color: #E6DB74 } /* Literal.String.Double */
+body .se { color: #AE81FF } /* Literal.String.Escape */
+body .sh { color: #E6DB74 } /* Literal.String.Heredoc */
+body .si { color: #E6DB74 } /* Literal.String.Interpol */
+body .sx { color: #E6DB74 } /* Literal.String.Other */
+body .sr { color: #E6DB74 } /* Literal.String.Regex */
+body .s1 { color: #E6DB74 } /* Literal.String.Single */
+body .ss { color: #E6DB74 } /* Literal.String.Symbol */
+body .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+body .fm { color: #A6E22E } /* Name.Function.Magic */
+body .vc { color: #F8F8F2 } /* Name.Variable.Class */
+body .vg { color: #F8F8F2 } /* Name.Variable.Global */
+body .vi { color: #F8F8F2 } /* Name.Variable.Instance */
+body .vm { color: #F8F8F2 } /* Name.Variable.Magic */
+body .il { color: #AE81FF } /* Literal.Number.Integer.Long */
+
+    </style>
+</head>
+<body>
+    <div id="copiedDialog" class="copied-dialog" style="color: white;">Copied code successfully!</div>
+    <div class="container">
+        <h1 class="title">503. Next Greater Element in a Circular Array</h1>
+        <div class="content">
+            <div class="code-section" >
+                <h2>C++ Code</h2>
+<textarea id="textArea" rows="10" cols="50" style="display: none;">
+vector<int> nextGreaterElements(vector<int>& nums) {
+    stack<int> st; // Stack to store elements for comparison
+    int n = nums.size(); // Size of the input array
+    int max = INT_MAX; // A sentinel value to represent an empty stack condition
+    st.push(max); // Initialize stack with sentinel value
+    vector<int> ans(n); // Result vector to store next greater elements
+    
+    // Loop through the array twice to handle circular nature
+    for (int i = 2*n - 1; i >= 0; i--) {
+        int j = i % n; // Get the correct index in the original array
+        int curr = nums[j]; // Current element being processed
+        
+        // Pop elements from stack while they are smaller or equal to the current element
+        while (curr >= st.top()) {
+            st.pop();
+        }
+        
+        // If the top of the stack is the sentinel value, assign -1 (no greater element)
+        if (st.top() == max) {
+            if (i < n) ans[j] = -1;
+        } else {
+            // Otherwise, the top of the stack is the next greater element
+            if (i < n) ans[j] = st.top();
+        }
+        
+        // Push the current element onto the stack for future comparisons
+        st.push(curr);
+    }
+    return ans; // Return the result vector
+}
+</textarea>
+                <button class="copy-btn" onclick="copyText()">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M16 1H4a2 2 0 0 0-2 2v14h2V3h12V1zm3 4H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 16H8V7h11v14z"/>
+                    </svg>
+                </button>
+            <!-- <div id = "cde" style="border-radius: 10px;">
+                    <iframe id="embeddedFrame" src="zero_array_II_code.html" width="100%" height="930px" style="border:none; border-radius: 10px;" ></iframe>
+                </div> -->
+<!-- Paste code here -->
+<div class="code-highlight"><pre><span></span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">nextGreaterElements</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">nums</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">stack</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">st</span><span class="p">;</span><span class="w"> </span><span class="c1">// Stack to store elements for comparison</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nums</span><span class="p">.</span><span class="n">size</span><span class="p">();</span><span class="w"> </span><span class="c1">// Size of the input array</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">max</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">INT_MAX</span><span class="p">;</span><span class="w"> </span><span class="c1">// A sentinel value to represent an empty stack condition</span>
+<span class="w">    </span><span class="n">st</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="n">max</span><span class="p">);</span><span class="w"> </span><span class="c1">// Initialize stack with sentinel value</span>
+<span class="w">    </span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">ans</span><span class="p">(</span><span class="n">n</span><span class="p">);</span><span class="w"> </span><span class="c1">// Result vector to store next greater elements</span>
+<span class="w">    </span>
+<span class="w">    </span><span class="c1">// Loop through the array twice to handle circular nature</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="o">*</span><span class="n">n</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">--</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="n">n</span><span class="p">;</span><span class="w"> </span><span class="c1">// Get the correct index in the original array</span>
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">curr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nums</span><span class="p">[</span><span class="n">j</span><span class="p">];</span><span class="w"> </span><span class="c1">// Current element being processed</span>
+<span class="w">        </span>
+<span class="w">        </span><span class="c1">// Pop elements from stack while they are smaller or equal to the current element</span>
+<span class="w">        </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">curr</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">st</span><span class="p">.</span><span class="n">top</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">st</span><span class="p">.</span><span class="n">pop</span><span class="p">();</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span>
+<span class="w">        </span><span class="c1">// If the top of the stack is the sentinel value, assign -1 (no greater element)</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">st</span><span class="p">.</span><span class="n">top</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">max</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">n</span><span class="p">)</span><span class="w"> </span><span class="n">ans</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">-1</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="c1">// Otherwise, the top of the stack is the next greater element</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">n</span><span class="p">)</span><span class="w"> </span><span class="n">ans</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">st</span><span class="p">.</span><span class="n">top</span><span class="p">();</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span>
+<span class="w">        </span><span class="c1">// Push the current element onto the stack for future comparisons</span>
+<span class="w">        </span><span class="n">st</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="n">curr</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">ans</span><span class="p">;</span><span class="w"> </span><span class="c1">// Return the result vector</span>
+<span class="p">}</span>
+</pre></div>
+            </div>
+            <div class="article-section">
+<!-- Paste Article here -->
+<h1><strong>Next Greater Element in a Circular Array</strong></h1>
+<h2><strong>Introduction</strong></h2>
+<p>The <strong>Next Greater Element (NGE)</strong> problem requires finding the next greater element for each number in an array. If no greater element exists, return <code>-1</code>. Since the array is circular, elements at the end can consider elements at the beginning.</p>
+<p>For example, given the array <code>{1, 2, 1}</code>, the next greater elements are <code>{2, -1, 2}</code> because:</p>
+<ul>
+<li>The next greater element for <code>1</code> (at index <code>0</code>) is <code>2</code> (at index <code>1</code>).</li>
+<li>The next greater element for <code>2</code> (at index <code>1</code>) does not exist, so it is <code>-1</code>.</li>
+<li>The next greater element for <code>1</code> (at index <code>2</code>) is <code>2</code>, found by wrapping around to index <code>0</code>.</li>
+</ul>
+<p>A <strong>brute force approach</strong> would involve checking the next greater element for each element by scanning the array twice, leading to a time complexity of <code>O(n&sup2;)</code>. Instead, we use a <strong>stack-based approach</strong> to efficiently find the solution in <code>O(n)</code> time.</p>
+<hr />
+<h2><strong>Why Use a Stack?</strong></h2>
+<p>A <strong>stack</strong> is useful for this problem because:</p>
+<ol>
+<li><strong>It helps maintain a decreasing order of elements</strong>: By always keeping the largest elements on top, we can efficiently find the next greater element.</li>
+<li><strong>It allows efficient removal of smaller elements</strong>: When a new element is processed, all smaller elements that are no longer useful can be popped off quickly.</li>
+<li><strong>It provides an efficient way to look back</strong>: Instead of iterating through the array multiple times, the stack helps us efficiently store and retrieve the next greater elements.</li>
+</ol>
+<p>The key insight is that for each element <code>nums[i]</code>, we can pop elements from the stack until we find a greater one. If the stack is empty, there is no greater element, so we assign <code>-1</code>. Otherwise, the top of the stack is the next greater element.</p>
+<hr />
+<h2><strong>Approach</strong></h2>
+<p>We solve this problem efficiently using a <strong>monotonic decreasing stack</strong>.</p>
+<h3><strong>Steps</strong></h3>
+<ol>
+<li><strong>Use a stack</strong> to keep track of elements for which the next greater element has not yet been found.</li>
+<li><strong>Traverse the array twice</strong> to simulate circular behavior.</li>
+<li><strong>Process each element in reverse order</strong> (right to left), allowing us to maintain a valid stack of next greater elements.</li>
+<li><strong>Pop elements from the stack</strong> while they are <strong>less than or equal</strong> to the current element.</li>
+<li><strong>Store the next greater element</strong> and push the current element onto the stack for future use.</li>
+</ol>
+<hr />
+<h2><strong>Implementation Details</strong></h2>
+<ul>
+<li>We initialize a <code>stack&lt;int&gt; st</code> to keep track of greater elements.</li>
+<li>We traverse the array <strong>twice</strong> using a loop:
+<pre><code class="language-cpp">for (int i = 2*n - 1; i &gt;= 0; i--)
+</code></pre>
+<ul>
+<li>This allows elements to be checked in a circular manner.</li>
+</ul>
+</li>
+<li>For each element <code>nums[j]</code>, pop elements from the stack while they are <strong>less than or equal</strong> to <code>nums[j]</code>:
+<pre><code class="language-cpp">while (curr &gt;= st.top()) {  
+    st.pop();  
+}
+</code></pre>
+</li>
+<li>The <strong>top element</strong> of the stack after popping is the <strong>next greater element</strong>. If the stack is empty, assign <code>-1</code>.</li>
+<li>Finally, <strong>push <code>nums[j]</code> onto the stack</strong> for future comparisons.</li>
+</ul>
+<hr />
+<h2><strong>Step-by-Step Dry Run</strong></h2>
+<h3><strong>Test Case 1</strong></h3>
+<h4><strong>Input:</strong></h4>
+<pre><code class="language-cpp">nums = {1, 2, 1}
+</code></pre>
+<h4><strong>Expected Output:</strong></h4>
+<pre><code class="language-cpp">{2, -1, 2}
+</code></pre>
+<h3><strong>Execution Breakdown</strong></h3>
+<table>
+<thead>
+<tr>
+<th>Iteration</th>
+<th><code>i</code></th>
+<th><code>j</code> (Index)</th>
+<th><code>nums[j]</code></th>
+<th>Stack Before</th>
+<th>Action Taken</th>
+<th>Stack After</th>
+<th><code>ans[j]</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>5</td>
+<td>2</td>
+<td>1</td>
+<td><code>[&infin;]</code></td>
+<td>Push <code>1</code></td>
+<td><code>[1, &infin;]</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td>2</td>
+<td>4</td>
+<td>1</td>
+<td>2</td>
+<td><code>[1, &infin;]</code></td>
+<td>Pop <code>1</code>, Push <code>2</code></td>
+<td><code>[2, &infin;]</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td>3</td>
+<td>3</td>
+<td>0</td>
+<td>1</td>
+<td><code>[2, &infin;]</code></td>
+<td><code>2</code> is NGE for <code>1</code></td>
+<td><code>[2, 1, &infin;]</code></td>
+<td><code>2</code></td>
+</tr>
+<tr>
+<td>4</td>
+<td>2</td>
+<td>2</td>
+<td>1</td>
+<td><code>[1, 2, &infin;]</code></td>
+<td>Pop <code>1</code>, <code>2</code> is NGE</td>
+<td><code>[2, &infin;]</code></td>
+<td><code>2</code></td>
+</tr>
+<tr>
+<td>5</td>
+<td>1</td>
+<td>1</td>
+<td>2</td>
+<td><code>[2, &infin;]</code></td>
+<td>Pop <code>2</code>, Assign <code>-1</code></td>
+<td><code>[&infin;]</code></td>
+<td><code>-1</code></td>
+</tr>
+<tr>
+<td>6</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td><code>[2, &infin;]</code></td>
+<td><code>2</code> is NGE</td>
+<td><code>[2, 1, &infin;]</code></td>
+<td><code>2</code></td>
+</tr>
+</tbody>
+</table>
+<h3><strong>Final Answer:</strong></h3>
+<pre><code>{2, -1, 2}
+</code></pre>
+<hr />
+<h2><strong>More Test Cases</strong></h2>
+<table>
+<thead>
+<tr>
+<th>Test Case</th>
+<th>Input</th>
+<th>Output</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Test 2</strong></td>
+<td><code>{3, 8, 4, 1, 2}</code></td>
+<td><code>{8, -1, 8, 2, 3}</code></td>
+</tr>
+<tr>
+<td><strong>Test 3</strong></td>
+<td><code>{5, 7, 1, 2, 6}</code></td>
+<td><code>{7, -1, 2, 6, 7}</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2><strong>Complexity Analysis</strong></h2>
+<h3><strong>Time Complexity:</strong></h3>
+<ul>
+<li>Each element is pushed onto the stack <strong>once</strong> and popped <strong>at most once</strong>.</li>
+<li>This gives an <strong>O(n) complexity</strong> for a <strong>single traversal</strong>.</li>
+<li>Since we <strong>traverse the array twice</strong>, the worst-case time complexity remains <strong>O(n)</strong>.</li>
+</ul>
+<h3><strong>Space Complexity:</strong></h3>
+<ul>
+<li>The stack stores at most <code>n</code> elements in the worst case, leading to <strong>O(n) space complexity</strong>.</li>
+<li>The result array <code>ans</code> also takes <strong>O(n) space</strong>.</li>
+</ul>
+<p>Thus, the overall space complexity is <strong>O(n)</strong>.</p>
+<hr />
+<h2><strong>Conclusion</strong></h2>
+<p>This stack-based approach efficiently solves the <strong>Next Greater Element in a Circular Array</strong> problem by leveraging a <strong>monotonic decreasing stack</strong>. Instead of brute-force checking every element, we efficiently track potential greater elements using a <strong>single pass with a stack</strong>, leading to an optimal <strong>O(n) solution</strong>.</p>
+            </div></div>
+    </div>
+    <script>
+        function adjustIframeHeight() {
+    const iframe = document.getElementById('embeddedFrame');
+    iframe.onload = function () {
+        iframe.style.height = iframe.contentWindow.document.body.scrollHeight + 'px';
+    };
+}
+window.onload = adjustIframeHeight;
+async function copyText() {
+            let textArea = document.getElementById("textArea");
+            try {
+                await navigator.clipboard.writeText(textArea.value);
+                showCopiedDialog();
+            } catch (err) {
+                alert("Failed to copy text: " + err);
+            }
+        }
+        function showCopiedDialog() {
+        let dialog = document.getElementById("copiedDialog");
+        dialog.classList.add("show");
+        setTimeout(() => {
+            dialog.classList.remove("show");
+        }, 2000); // Hide after 2 seconds
+    }
+    function adjustFlexDirection() {
+    const content = document.querySelector('.content');
+    const codeSection = document.querySelector('.code-section');
+    const articleSection = document.querySelector('.article-section');
+    const preElements = document.querySelectorAll('.article-section pre');
+
+    if (!content || !codeSection || !articleSection) {
+        console.error("One or more elements are missing!");
+        return; // Stop if elements don't exist
+    }
+
+    const screenWidth = window.innerWidth;
+    const codeSectionWidth = codeSection.offsetWidth;
+
+    // Force recalculation of layout to ensure correct measurements
+//     requestAnimationFrame(() => {
+//         // 🔴 **First priority: Code section width check**
+//         if (codeSectionWidth / screenWidth > 0.5) {
+//             content.style.flexDirection = 'column';
+//             codeSection.style.position = 'relative';
+//             return; // Stop further checks
+//         }
+
+//         // 🟢 **Second priority: Check if any <pre> is wider than .article-section**
+//         let preExceedsArticle = false;
+//         preElements.forEach(pre => {
+//             if (pre.offsetWidth > articleSection.offsetWidth) {
+//                 preExceedsArticle = true;
+//             }
+//         });
+
+//         if (preExceedsArticle) {
+//             content.style.flexDirection = 'row';
+//         } else {
+//             content.style.flexDirection = 'column';
+//         }
+//     });
+// }
+
+// // ✅ **Run on load and resize with a slight delay**
+// window.addEventListener('load', () => setTimeout(adjustFlexDirection, 50));
+// window.addEventListener('resize', adjustFlexDirection);
+
+    </script>
+</body>
+</html>
