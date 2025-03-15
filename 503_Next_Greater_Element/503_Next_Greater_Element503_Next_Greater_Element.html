@@ -42,7 +42,7 @@
         min-width: 300px; /* Minimum width */
         max-width: 700px; /* Maximum width before wrapping */
         height: fit-content;
-      //  position: sticky;
+        /* position: sticky; */
         top: 10px;
         }
         .code-section h2 {
@@ -568,19 +568,19 @@ async function copyText() {
             dialog.classList.remove("show");
         }, 2000); // Hide after 2 seconds
     }
-    function adjustFlexDirection() {
-    const content = document.querySelector('.content');
-    const codeSection = document.querySelector('.code-section');
-    const articleSection = document.querySelector('.article-section');
-    const preElements = document.querySelectorAll('.article-section pre');
+    // function adjustFlexDirection() {
+    // const content = document.querySelector('.content');
+    // const codeSection = document.querySelector('.code-section');
+    // const articleSection = document.querySelector('.article-section');
+    // const preElements = document.querySelectorAll('.article-section pre');
 
-    if (!content || !codeSection || !articleSection) {
-        console.error("One or more elements are missing!");
-        return; // Stop if elements don't exist
-    }
+    // if (!content || !codeSection || !articleSection) {
+    //     console.error("One or more elements are missing!");
+    //     return; // Stop if elements don't exist
+    // }
 
-    const screenWidth = window.innerWidth;
-    const codeSectionWidth = codeSection.offsetWidth;
+    // const screenWidth = window.innerWidth;
+    // const codeSectionWidth = codeSection.offsetWidth;
 
     // Force recalculation of layout to ensure correct measurements
 //     requestAnimationFrame(() => {
