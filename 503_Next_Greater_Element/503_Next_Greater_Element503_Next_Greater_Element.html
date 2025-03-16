@@ -278,10 +278,133 @@ body .vg { color: #F8F8F2 } /* Name.Variable.Global */
 body .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 body .vm { color: #F8F8F2 } /* Name.Variable.Magic */
 body .il { color: #AE81FF } /* Literal.Number.Integer.Long */
+/* Define CSS variables for light and dark themes */
+:root {
+    /* Light theme (default) */
+    --background: linear-gradient(to right bottom, #dfe4ea, #919191);
+    --text-color: #333;
+    --title-color: #2c3e50;
+    --article-bg: #fff;
+    --article-text: #555;
+    --code-bg: #1e1e1e;
+    --code-title: #dcdcdc;
+    --shadow: rgba(0, 0, 0, 0.1);
+    --table-border: black;
+}
 
+[data-theme="dark"] {
+    /* Dark theme */
+    --background: linear-gradient(to right bottom, #2c3e50, #1a252f);
+    --text-color: #e0e0e0;
+    --title-color: #61dafb;
+    --article-bg: #2d2d2d;
+    --article-text: #c0c0c0;
+    --code-bg: #1a1a1a;
+    --code-title: #ffffff;
+    --shadow: rgba(255, 255, 255, 0.1);
+    --table-border: #ffffff;
+}
+
+/* Update existing selectors to use variables */
+body {
+    background: var(--background);
+    color: var(--text-color);
+    transition: all 0.3s ease;
+}
+
+.title {
+    color: var(--title-color);
+}
+
+.code-section {
+    background-color: var(--code-bg);
+    box-shadow: 0 4px 10px var(--shadow);
+}
+
+.code-section h2 {
+    color: var(--code-title);
+}
+
+.article-section {
+    background-color: var(--article-bg);
+    box-shadow: 0 4px 10px var(--shadow);
+}
+
+.article-section h2 {
+    color: var(--title-color);
+}
+
+.article-section p {
+    color: var(--article-text);
+}
+
+.article-section code {
+    color: var(--text-color);
+}
+
+.article-section table, th, td {
+    border: 1px solid var(--table-border);
+}
+
+.copied-dialog {
+    box-shadow: 0px 4px 12px var(--shadow);
+}
+
+/* Dark mode toggle button */
+.theme-toggle {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #282c34;
+    border: 1px solid #61afef;
+    border-radius: 5px;
+    width: 30px; /* Slimmer width */
+    height: 30px; /* Slimmer height */
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    z-index: 1000;
+}
+
+.theme-toggle:hover {
+    background: #3a3f4a;
+    border-color: #4a8fd2;
+}
+
+.theme-toggle svg {
+    width: 20px;
+    height: 20px;
+    fill: #61afef;
+}
+
+.theme-toggle:hover svg {
+    fill: #4a8fd2;
+}
+
+@media (max-width: 768px) {
+    .theme-toggle {
+        top: 10px;
+        right: 10px;
+    }
+     
+}   body {
+    font-family: 'Arial', sans-serif;
+    background: var(--background);
+    margin: 0;
+    padding: 0;
+    color: var(--text-color);
+    transition: background 6.5s ease, color 0.3s ease; /* Animation for background and text color */
+}
     </style>
 </head>
 <body>
+    <button class="theme-toggle" onclick="toggleTheme()">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
+        </svg>
+    </button>
     <div id="copiedDialog" class="copied-dialog" style="color: white;">Copied code successfully!</div>
     <div class="container">
         <h1 class="title">503. Next Greater Element in a Circular Array</h1>
@@ -610,7 +733,27 @@ async function copyText() {
 // // ✅ **Run on load and resize with a slight delay**
 // window.addEventListener('load', () => setTimeout(adjustFlexDirection, 50));
 // window.addEventListener('resize', adjustFlexDirection);
+// Theme toggle function
+function toggleTheme() {
+    const html = document.documentElement;
+    const currentTheme = html.getAttribute('data-theme');
+    if (currentTheme === 'dark') {
+        html.removeAttribute('data-theme');
+        localStorage.setItem('theme', 'light');
+    } else {
+        html.setAttribute('data-theme', 'dark');
+        localStorage.setItem('theme', 'dark');
+    }
+}
 
+// Update window.onload to check for saved theme
+window.onload = function() {
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'dark') {
+        document.documentElement.setAttribute('data-theme', 'dark');
+    }
+    adjustIframeHeight();
+};
     </script>
 </body>
 </html>
