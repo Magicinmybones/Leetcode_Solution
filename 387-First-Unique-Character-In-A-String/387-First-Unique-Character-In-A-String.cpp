@@ -10,12 +10,13 @@ int firstUniqChar(string s);
 int main() {
     string s = "leetcode";
     int index = firstUniqChar(s);
+
     if (index != -1) {
         cout << "The first unique character is at index: " << index << endl;
     } else {
         cout << "There is no unique character in the string." << endl;
     }
-    return 0;
+    
 }
 int firstUniqChar(string s) {
     int n = s.size();
