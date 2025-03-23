@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>104 Maximum Depth Of Binary Tree</title>
+    <link rel="stylesheet" href="Style.css">
+    <script src="myscripts.js"></script> 
+</head>
+<body>
+    <div id="copiedDialog" class="copied-dialog" style="color: white;">Copied code successfully!</div>
+    <div class="container">
+        <h1 class="title">104 Maximum Depth Of Binary Tree</h1>
+        <div class="content">
+            <div class="code-section" >
+                <h2>C++ Code</h2>
+<textarea id="textArea" rows="10" cols="50" style="display: none;">
+<!-- Add Code To Copy -->
+#include <iostream>
+#include <algorithm>
+using namespace std;
+
+struct TreeNode {
+    int val;
+    TreeNode* left;
+    TreeNode* right;
+    TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+};
+
+int maxDepth(TreeNode* root) {
+    if(root == NULL){
+        return 0;
+    }
+    int leftheight = maxDepth(root->left);
+    int rightheight = maxDepth(root->right);
+    int height = max(leftheight,rightheight) +1;
+    return height;
+}
+
+int main() {
+    TreeNode* root = new TreeNode(1);
+    root->left = new TreeNode(2);
+    root->right = new TreeNode(3);
+    root->left->left = new TreeNode(4);
+    root->left->right = new TreeNode(5);
+
+    cout << "Maximum Depth of Binary Tree: " << maxDepth(root) << endl;
+
+    // Clean up memory
+    delete root->left->left;
+    delete root->left->right;
+    delete root->left;
+    delete root->right;
+    delete root;
+
+    return 0;
+}
+
+</textarea>
+                <button class="copy-btn" onclick="copyText()">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M16 1H4a2 2 0 0 0-2 2v14h2V3h12V1zm3 4H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 16H8V7h11v14z"/>
+                    </svg>
+                </button>
+            <!-- <div id = "cde" style="border-radius: 10px;">
+                    <iframe id="embeddedFrame" src="zero_array_II_code.html" width="100%" height="930px" style="border:none; border-radius: 10px;" ></iframe>
+                </div> -->
+<!-- Paste code here -->
+<div class="code-highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">maxDepth</span><span class="p">(</span><span class="n">TreeNode</span><span class="o">*</span><span class="w"> </span><span class="n">root</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+    <span class="w">    </span><span class="k">if</span><span class="p">(</span><span class="n">root</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nb">NULL</span><span class="p">){</span>
+    <span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+    <span class="w">    </span><span class="p">}</span>
+    <span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">leftheight</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">maxDepth</span><span class="p">(</span><span class="n">root</span><span class="o">-&gt;</span><span class="n">left</span><span class="p">);</span>
+    <span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">rightheight</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">maxDepth</span><span class="p">(</span><span class="n">root</span><span class="o">-&gt;</span><span class="n">right</span><span class="p">);</span>
+    <span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">height</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">max</span><span class="p">(</span><span class="n">leftheight</span><span class="p">,</span><span class="n">rightheight</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="mi">1</span><span class="p">;</span>
+    <span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">height</span><span class="p">;</span>
+    <span class="p">}</span>
+    </pre></div>
+            </div>
+            <div class="article-section">
+<!-- Paste Article here -->
+<h1>Understanding <code>maxDepth</code> Function in Binary Trees</h1>
+<h2>Introduction</h2>
+<p>The <code>maxDepth</code> function computes the maximum depth (or height) of a binary tree using a recursive approach. It determines the depth of the left and right subtrees and returns the greater of the two plus one.</p>
+<h2>Code Explanation</h2>
+<p>The function follows a <strong>depth-first search (DFS)</strong> approach:</p>
+<ul>
+<li>If <code>root == NULL</code>, return <code>0</code>.</li>
+<li>Recursively compute the depth of the left subtree using <code>maxDepth(root-&gt;left)</code>.</li>
+<li>Recursively compute the depth of the right subtree using <code>maxDepth(root-&gt;right)</code>.</li>
+<li>Return the maximum depth using <code>max(leftheight, rightheight) + 1</code>.</li>
+</ul>
+<h3>Complexity Analysis</h3>
+<ul>
+<li><strong>Time Complexity:</strong> O(N), where N is the number of nodes. Each node is visited once.</li>
+<li><strong>Space Complexity:</strong> O(H), where H is the height of the tree. In the worst case (skewed tree), it is O(N), and in the best case (balanced tree), it is O(\log N).</li>
+</ul>
+<h2>Test Case Walkthrough</h2>
+<h3>Detailed Example</h3>
+<p>Consider the following binary tree:</p>
+<pre><code>       1
+      / \
+     2   3
+    / \
+   4   5
+</code></pre>
+<p><strong>Step-by-step execution:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Call Stack (Function Call)</th>
+<th>Left Subtree Depth</th>
+<th>Right Subtree Depth</th>
+<th>Computed Depth</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>maxDepth(1)</code></td>
+<td>?</td>
+<td>?</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td><code>maxDepth(2)</code></td>
+<td>?</td>
+<td>?</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td><code>maxDepth(4)</code></td>
+<td><code>maxDepth(NULL) = 0</code></td>
+<td><code>maxDepth(NULL) = 0</code></td>
+<td><code>max(0,0) + 1 = 1</code></td>
+</tr>
+<tr>
+<td><code>maxDepth(5)</code></td>
+<td><code>maxDepth(NULL) = 0</code></td>
+<td><code>maxDepth(NULL) = 0</code></td>
+<td><code>max(0,0) + 1 = 1</code></td>
+</tr>
+<tr>
+<td><code>maxDepth(2)</code></td>
+<td><code>1</code></td>
+<td><code>1</code></td>
+<td><code>max(1,1) + 1 = 2</code></td>
+</tr>
+<tr>
+<td><code>maxDepth(3)</code></td>
+<td><code>maxDepth(NULL) = 0</code></td>
+<td><code>maxDepth(NULL) = 0</code></td>
+<td><code>max(0,0) + 1 = 1</code></td>
+</tr>
+<tr>
+<td><code>maxDepth(1)</code></td>
+<td><code>2</code></td>
+<td><code>1</code></td>
+<td><code>max(2,1) + 1 = 3</code></td>
+</tr>
+</tbody>
+</table>
+<h3>Other Test Cases</h3>
+<table>
+<thead>
+<tr>
+<th>Tree Structure</th>
+<th>Expected Depth</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>NULL</code> (Empty Tree)</td>
+<td><code>0</code></td>
+</tr>
+<tr>
+<td>Single node (<code>1</code>)</td>
+<td><code>1</code></td>
+</tr>
+<tr>
+<td>Skewed left (<code>1 &rarr; 2 &rarr; 3</code>)</td>
+<td><code>3</code></td>
+</tr>
+<tr>
+<td>Perfect Binary Tree (Height <code>h</code>)</td>
+<td><code>h</code></td>
+</tr>
+</tbody>
+</table>
+<h2>Conclusion</h2>
+<p>The <code>maxDepth</code> function efficiently computes tree depth using recursion. Its performance is optimal for balanced trees, but it can become inefficient for highly unbalanced trees due to recursion depth. Using an iterative BFS approach could be beneficial for such cases.</p>
+            </div></div>
+    </div>
+</body>
+</html>
