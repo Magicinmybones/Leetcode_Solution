@@ -9,13 +9,18 @@ struct TreeNode {
     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
 };
 
+// Function to calculate the maximum depth of a binary tree
 int maxDepth(TreeNode* root) {
-    if(root == NULL){
+    // Base case: if the tree is empty, return depth as 0
+    if (root == NULL) {
         return 0;
     }
+    // Recursively calculate the depth of the left subtree
     int leftheight = maxDepth(root->left);
+    // Recursively calculate the depth of the right subtree
     int rightheight = maxDepth(root->right);
-    int height = max(leftheight,rightheight) +1;
+    // The depth of the current node is the maximum of the depths of its subtrees plus 1
+    int height = max(leftheight, rightheight) + 1;
     return height;
 }
 
